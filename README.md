@@ -2,7 +2,7 @@
 
 A clickable concept prototype of the proposed **Equilibria360** digital platform for midlife women's health in Uganda, from Equilibria360 Women's Clinic.
 
-**Open the prototype:** https://moz7-cyber.github.io/equilibria360-prototype/
+**Open the prototype:** https://YOUR-GITHUB-USERNAME.github.io/equilibria360-prototype/
 
 > **Concept prototype.** These are illustrative screens, not a working product. No data is stored or sent. Assistant answers are pre-written examples. In the proposed platform, content would be clinically reviewed and medical decisions would remain with qualified clinicians.
 

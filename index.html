@@ -67,7 +67,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tabs button[aria-current="page"] svg{stroke:var(--plum)}
 
 .brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--plum);font-size:1rem}
-.brand i{width:22px;height:22px;border-radius:50%;border:3px solid var(--coral);border-right-color:var(--gold);display:inline-block}
+.brand svg{width:28px;height:28px;flex:none}.brand span{color:var(--coral)}.brand-lg{font-size:1.2rem;gap:12px;margin-bottom:18px}.brand-lg svg{width:44px;height:44px}
 .hero{background:var(--plum);color:#fff;border-radius:26px;padding:26px 22px 24px;margin:16px 0 20px;position:relative;overflow:hidden}
 :root[data-theme="dark"] .hero{background:#4a2a5c}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:#4a2a5c}}
@@ -146,7 +146,7 @@ input[type=range]{width:100%;accent-color:var(--coral);margin-top:10px}
 <body>
 <main class="stage">
   <section class="brief" aria-label="About this prototype">
-    <h1>Equilibria360 concept prototype</h1>
+    <div class="brand brand-lg"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 9 A34 34 0 0 0 50 77" fill="none" style="stroke:var(--plum)" stroke-width="10" stroke-linecap="round"/><path d="M50 23 A34 34 0 0 1 50 91" fill="none" stroke="#E07A5F" stroke-width="10" stroke-linecap="round"/><circle cx="50" cy="50" r="6.5" fill="#D9A441"/></svg><b style="font-weight:800">Equilibria<span>360</span></b></div><h1>Equilibria360 concept prototype</h1>
     <p>A clickable walkthrough of the proposed midlife health platform: education, symptom tracking, an information assistant and a care pathway.</p>
     <div class="flag">Concept prototype. Illustrative screens, not a working product. No data is stored or sent.</div>
     <ol class="tour" id="tour">
@@ -167,7 +167,7 @@ input[type=range]{width:100%;accent-color:var(--coral);margin-top:10px}
 
         <!-- HOME -->
         <section class="view" id="v-home" aria-label="Welcome">
-          <div class="brand"><i aria-hidden="true"></i>Equilibria360</div>
+          <div class="brand"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 9 A34 34 0 0 0 50 77" fill="none" style="stroke:var(--plum)" stroke-width="10" stroke-linecap="round"/><path d="M50 23 A34 34 0 0 1 50 91" fill="none" stroke="#E07A5F" stroke-width="10" stroke-linecap="round"/><circle cx="50" cy="50" r="6.5" fill="#D9A441"/></svg><b style="font-weight:800">Equilibria<span>360</span></b></div>
           <div class="hero">
             <h2>Your midlife health matters.</h2>
             <p>Understand your symptoms. Explore reliable information. Connect with care.</p>
