@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Equilibria360 – Concept prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plum:#3b1f4a; --plum-2:#58306a; --coral:#e07a5f; --sage:#6f9d86; --gold:#d19a32;
+  --bg:#f3ece8; --panel:#fbf8f6; --surface:#ffffff; --ink:#2a1c33; --muted:#6e6075; --line:#e6dbe2;
+  --soft-plum:#efe6f2; --soft-coral:#fbe9e3; --soft-sage:#e5f0ea; --soft-gold:#f8eedb;
+  --phone:#24152d;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1b1220; --panel:#241a2b; --surface:#2e2236; --ink:#f2eaf3; --muted:#b9a9bf; --line:#45364e;
+    --soft-plum:#3a2846; --soft-coral:#4a2e2a; --soft-sage:#24382f; --soft-gold:#3d3220;
+    --plum:#cfa8e0; --plum-2:#b88bcc; --phone:#0e0912; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1220; --panel:#241a2b; --surface:#2e2236; --ink:#f2eaf3; --muted:#b9a9bf; --line:#45364e;
+  --soft-plum:#3a2846; --soft-coral:#4a2e2a; --soft-sage:#24382f; --soft-gold:#3d3220;
+  --plum:#cfa8e0; --plum-2:#b88bcc; --phone:#0e0912; color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+
+.stage{min-height:100%;display:grid;grid-template-columns:minmax(280px,420px) auto;gap:64px;align-items:center;justify-content:center;padding:40px 32px}
+.brief h1{font-size:2.1rem;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;color:var(--plum)}
+.brief p{color:var(--muted);line-height:1.55;margin:0 0 20px;max-width:38ch}
+.flag{display:inline-flex;gap:8px;align-items:center;background:var(--soft-gold);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:.88rem;font-weight:600;margin-bottom:28px;line-height:1.4}
+.flag::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none}
+.tour{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.tour button{width:100%;text-align:left;display:flex;gap:14px;align-items:center;background:transparent;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.tour button .n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--soft-plum);color:var(--plum);font-weight:700;font-size:.85rem;flex:none}
+.tour button b{display:block;font-size:.95rem}
+.tour button span.s{font-size:.82rem;color:var(--muted)}
+.tour button[aria-current="true"]{background:var(--surface);border-color:var(--plum-2)}
+.tour button[aria-current="true"] .n{background:var(--plum);color:var(--surface)}
+.foot{margin-top:24px;font-size:.8rem;color:var(--muted);max-width:40ch;line-height:1.5}
+
+.phone{width:390px;height:800px;background:var(--phone);border-radius:56px;padding:12px;box-shadow:0 40px 80px -30px rgba(59,31,74,.45)}
+.screen{position:relative;height:100%;border-radius:44px;overflow:hidden;background:var(--panel);display:flex;flex-direction:column}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:110px;height:30px;border-radius:20px;background:var(--phone);z-index:5}
+.status{height:50px;flex:none;display:flex;justify-content:space-between;align-items:flex-end;padding:0 30px 6px;font-size:.78rem;font-weight:700}
+.concept{flex:none;margin:4px 16px 0;background:var(--soft-gold);border-radius:10px;padding:6px 10px;font-size:.7rem;font-weight:600;text-align:center;color:var(--ink)}
+.views{flex:1;overflow:hidden;position:relative}
+.view{position:absolute;inset:0;overflow-y:auto;padding:18px 20px 24px;display:none}
+.view.on{display:block;animation:in .28s ease-out}
+@keyframes in{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view.on{animation:none}}
+
+.tabs{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--surface);padding:8px 8px 22px}
+.tabs button{background:none;border:0;display:grid;justify-items:center;gap:4px;font-size:.7rem;font-weight:600;color:var(--muted);padding:6px 0;border-radius:12px}
+.tabs svg{width:22px;height:22px}
+.tabs button[aria-current="page"]{color:var(--plum)}
+.tabs button[aria-current="page"] svg{stroke:var(--plum)}
+
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--plum);font-size:1rem}
+.brand i{width:22px;height:22px;border-radius:50%;border:3px solid var(--coral);border-right-color:var(--gold);display:inline-block}
+.hero{background:var(--plum);color:#fff;border-radius:26px;padding:26px 22px 24px;margin:16px 0 20px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .hero{background:#4a2a5c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:#4a2a5c}}
+.hero::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;border:22px solid rgba(224,122,95,.55)}
+.hero h2{font-size:1.75rem;line-height:1.12;margin:0 0 10px;letter-spacing:-.02em;max-width:11ch;position:relative}
+.hero p{margin:0;font-size:.9rem;line-height:1.5;opacity:.88;max-width:26ch;position:relative}
+.label{font-size:.82rem;font-weight:700;color:var(--muted);margin:0 0 10px}
+.tile{width:100%;display:flex;gap:14px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px}
+.tile .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none}
+.tile .ic svg{width:22px;height:22px}
+.tile b{display:block;font-size:.95rem}
+.tile small{color:var(--muted);font-size:.8rem}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--sage);background:var(--soft-sage);padding:5px 10px;border-radius:999px}
+
+h3.title{font-size:1.5rem;letter-spacing:-.02em;margin:6px 0 6px;line-height:1.15}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 18px;line-height:1.5}
+.back{background:none;border:0;padding:4px 0;font-weight:700;color:var(--plum);font-size:.88rem}
+
+.article{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:10px}
+.article b{display:block;margin:6px 0 4px}
+.article p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.5}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:11px 16px;font-weight:600;font-size:.9rem}
+.chip[aria-pressed="true"]{background:var(--plum);border-color:var(--plum);color:var(--surface)}
+.scale{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px}
+.scale label{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between}
+.scale output{color:var(--coral)}
+input[type=range]{width:100%;accent-color:var(--coral);margin-top:10px}
+.primary{width:100%;border:0;background:var(--coral);color:#fff;font-weight:700;border-radius:16px;padding:15px;font-size:.95rem}
+.primary:disabled{opacity:.45;cursor:not-allowed}
+.ghost{width:100%;border:1.5px solid var(--plum-2);background:transparent;color:var(--plum);font-weight:700;border-radius:16px;padding:13px;font-size:.92rem;margin-top:10px}
+.history{margin-top:18px}
+.rec{display:flex;justify-content:space-between;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:.84rem;margin-bottom:8px}
+.rec span{color:var(--muted)}
+
+.chat{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.msg{max-width:86%;padding:12px 14px;border-radius:18px;font-size:.88rem;line-height:1.5}
+.me{align-self:flex-end;background:var(--plum);color:var(--surface);border-bottom-right-radius:6px}
+.bot{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:6px}
+.bot p{margin:0 0 8px}.bot p:last-child{margin:0}
+.bot .note{display:block;margin-top:10px;font-size:.74rem;font-weight:700;color:var(--coral)}
+.typing{display:inline-flex;gap:4px}.typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:b 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes b{50%{opacity:.3;transform:translateY(-3px)}}
+.ask{display:grid;gap:8px}
+.ask button{text-align:left;background:var(--soft-plum);border:0;border-radius:14px;padding:11px 14px;font-size:.85rem;font-weight:600;color:var(--ink)}
+.disclaim{font-size:.74rem;color:var(--muted);text-align:center;margin:14px 0 0}
+
+.steps{list-style:none;margin:0 0 18px;padding:0;position:relative}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding-bottom:18px;position:relative}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line)}
+.steps li.done:not(:last-child)::before{background:var(--sage)}
+.dot{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--surface);border:2px solid var(--line);color:var(--muted)}
+.done .dot{background:var(--sage);border-color:var(--sage);color:#fff}
+.now .dot{border-color:var(--coral);color:var(--coral)}
+.steps b{display:block;margin-top:8px}
+.steps small{color:var(--muted);font-size:.82rem}
+.steps .st{display:inline-block;margin-top:6px;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--soft-sage);color:var(--sage)}
+.steps .now .st{background:var(--soft-coral);color:var(--coral)}
+
+.toast{position:absolute;left:16px;right:16px;bottom:96px;background:var(--ink);color:var(--surface);border-radius:14px;padding:13px 16px;font-size:.86rem;font-weight:600;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:6}
+.toast.show{opacity:1;transform:none}
+
+@media (max-width:900px){
+  .stage{grid-template-columns:1fr;padding:0;gap:0}
+  .brief{display:none}
+  .phone{width:100%;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--panel)}
+  .screen{border-radius:0}
+  .notch,.status{display:none}
+  .concept{margin-top:10px}
+}
+@media (min-width:901px) and (max-height:860px){.phone{transform:scale(.88);transform-origin:center}}
+</style>
+</head>
+<body>
+<main class="stage">
+  <section class="brief" aria-label="About this prototype">
+    <h1>Equilibria360 concept prototype</h1>
+    <p>A clickable walkthrough of the proposed midlife health platform: education, symptom tracking, an information assistant and a care pathway.</p>
+    <div class="flag">Concept prototype. Illustrative screens, not a working product. No data is stored or sent.</div>
+    <ol class="tour" id="tour">
+      <li><button data-go="home"><span class="n">1</span><span><b>Welcome and education</b><span class="s">Reliable, clinically reviewed guidance</span></span></button></li>
+      <li><button data-go="track"><span class="n">2</span><span><b>Symptom tracking</b><span class="s">Record how you feel</span></span></button></li>
+      <li><button data-go="ask"><span class="n">3</span><span><b>AI-assisted information</b><span class="s">Educational answers, not diagnosis</span></span></button></li>
+      <li><button data-go="care"><span class="n">4</span><span><b>Referral and follow-up</b><span class="s">From concern to the right provider</span></span></button></li>
+    </ol>
+    <p class="foot">Assistant answers in this prototype are pre-written examples. In the proposed platform, content would be clinically reviewed and medical decisions would remain with qualified clinicians.</p>
+  </section>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch" aria-hidden="true"></div>
+      <div class="status" aria-hidden="true"><span>9:41</span><span>Equilibria360</span></div>
+      <div class="concept" role="note">Concept prototype · not a working product</div>
+      <div class="views">
+
+        <!-- HOME -->
+        <section class="view" id="v-home" aria-label="Welcome">
+          <div class="brand"><i aria-hidden="true"></i>Equilibria360</div>
+          <div class="hero">
+            <h2>Your midlife health matters.</h2>
+            <p>Understand your symptoms. Explore reliable information. Connect with care.</p>
+          </div>
+          <p class="label">Where would you like to start?</p>
+          <button class="tile" data-go="learn">
+            <span class="ic" style="background:var(--soft-coral)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></span>
+            <span><b>Explore menopause education</b><small>Clinically reviewed guidance</small></span>
+          </button>
+          <button class="tile" data-go="track">
+            <span class="ic" style="background:var(--soft-plum)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum-2)" stroke-width="2" stroke-linecap="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span>
+            <span><b>Track how you feel</b><small>Record symptoms in under a minute</small></span>
+          </button>
+          <button class="tile" data-go="ask">
+            <span class="ic" style="background:var(--soft-gold)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
+            <span><b>Ask a health question</b><small>General information, not diagnosis</small></span>
+          </button>
+          <button class="tile" data-go="care">
+            <span class="ic" style="background:var(--soft-sage)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+            <span><b>Find professional support</b><small>Your care pathway</small></span>
+          </button>
+        </section>
+
+        <!-- LEARN -->
+        <section class="view" id="v-learn" aria-label="Menopause education">
+          <button class="back" data-go="home">‹ Home</button>
+          <h3 class="title">Menopause education</h3>
+          <p class="sub">Short guides written in plain language and reviewed by clinicians.</p>
+          <article class="article"><span class="pill">✓ Clinically reviewed</span><b>What is perimenopause?</b><p>The years leading up to menopause, when hormone levels begin to change and symptoms may start.</p></article>
+          <article class="article"><span class="pill">✓ Clinically reviewed</span><b>Sleep and night sweats</b><p>Why sleep can change in midlife, and practical steps that may help.</p></article>
+          <article class="article"><span class="pill">✓ Clinically reviewed</span><b>Preparing to talk to a clinician</b><p>What to note down before an appointment so your concerns are heard.</p></article>
+          <button class="ghost" data-go="ask">Ask a question about these topics</button>
+        </section>
+
+        <!-- TRACK -->
+        <section class="view" id="v-track" aria-label="Symptom tracking">
+          <p class="label">My wellbeing</p>
+          <h3 class="title">How are you feeling today?</h3>
+          <p class="sub">Select symptoms to discuss or track.</p>
+          <div class="chips" id="chips">
+            <button class="chip" aria-pressed="false">Hot flashes</button>
+            <button class="chip" aria-pressed="false">Sleep difficulties</button>
+            <button class="chip" aria-pressed="false">Mood changes</button>
+            <button class="chip" aria-pressed="false">Joint discomfort</button>
+          </div>
+          <div class="scale">
+            <label for="sev">How much is this affecting your day? <output id="sevOut">Moderately</output></label>
+            <input type="range" id="sev" min="1" max="3" value="2">
+          </div>
+          <button class="primary" id="save" disabled>Save symptom record</button>
+          <div class="history" id="history" hidden>
+            <p class="label">Recent records</p>
+            <div id="recs"></div>
+            <button class="ghost" data-go="care">Share with the clinical team</button>
+          </div>
+        </section>
+
+        <!-- ASK -->
+        <section class="view" id="v-ask" aria-label="Health information assistant">
+          <p class="label">Health information assistant</p>
+          <h3 class="title">Ask about midlife health</h3>
+          <p class="sub">Choose a question to see an example answer.</p>
+          <div class="chat" id="chat" aria-live="polite"></div>
+          <div class="ask" id="ask">
+            <button data-q="sleep">Why might my sleep change during menopause?</button>
+            <button data-q="flash">Are hot flashes common?</button>
+            <button data-q="when">When should I see a clinician?</button>
+          </div>
+          <p class="disclaim">Educational support only. Not a diagnosis.</p>
+        </section>
+
+        <!-- CARE -->
+        <section class="view" id="v-care" aria-label="Care pathway">
+          <p class="label">Referral and follow-up</p>
+          <h3 class="title">Your care pathway</h3>
+          <p class="sub">See where you are and what happens next.</p>
+          <ol class="steps" id="steps">
+            <li class="done"><span class="dot">1</span><span><b>Record concerns</b><small>Symptom history</small><br><span class="st">Done</span></span></li>
+            <li class="now"><span class="dot">2</span><span><b>Request guidance</b><small>Clinical team review</small><br><span class="st">Ready to request</span></span></li>
+            <li><span class="dot">3</span><span><b>Receive referral</b><small>Appropriate provider</small></span></li>
+            <li><span class="dot">4</span><span><b>Follow up</b><small>Track next steps</small></span></li>
+          </ol>
+          <button class="primary" id="req">Request clinical review</button>
+        </section>
+      </div>
+
+      <div class="toast" id="toast" role="status"></div>
+
+      <nav class="tabs" aria-label="Main">
+        <button data-go="home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+        <button data-go="track" data-tab="track"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>Track</button>
+        <button data-go="ask" data-tab="ask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Ask</button>
+        <button data-go="care" data-tab="care"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Care</button>
+      </nav>
+    </div>
+  </div>
+</main>
+
+<script>
+const views=["home","learn","track","ask","care"];
+const tabOf={home:"home",learn:"home",track:"track",ask:"ask",care:"care"};
+const tourOf={home:"home",learn:"home",track:"track",ask:"ask",care:"care"};
+function show(v){
+  if(!views.includes(v)) v="home";
+  document.querySelectorAll(".view").forEach(el=>el.classList.toggle("on",el.id==="v-"+v));
+  document.querySelectorAll("[data-tab]").forEach(b=>{ if(b.dataset.tab===tabOf[v]) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+  document.querySelectorAll("#tour button").forEach(b=>b.setAttribute("aria-current",b.dataset.go===tourOf[v]?"true":"false"));
+  document.getElementById("v-"+v).scrollTop=0;
+  if(location.hash.slice(1)!==v) history.replaceState(null,"","#"+v);
+}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]"); if(g) show(g.dataset.go);});
+window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+show(location.hash.slice(1)||"home");
+
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2400);}
+
+// tracking
+const chips=[...document.querySelectorAll("#chips .chip")], save=document.getElementById("save");
+chips.forEach(c=>c.addEventListener("click",()=>{c.setAttribute("aria-pressed",c.getAttribute("aria-pressed")!=="true");save.disabled=!chips.some(x=>x.getAttribute("aria-pressed")==="true");}));
+const sev=document.getElementById("sev"), sevOut=document.getElementById("sevOut"), words=["A little","Moderately","A lot"];
+sev.addEventListener("input",()=>sevOut.textContent=words[sev.value-1]);
+save.addEventListener("click",()=>{
+  const sel=chips.filter(x=>x.getAttribute("aria-pressed")==="true").map(x=>x.textContent);
+  const r=document.createElement("div");r.className="rec";
+  r.innerHTML=`<b></b><span>Today · ${words[sev.value-1].toLowerCase()}</span>`;r.querySelector("b").textContent=sel.join(", ");
+  document.getElementById("recs").prepend(r);document.getElementById("history").hidden=false;
+  chips.forEach(c=>c.setAttribute("aria-pressed","false"));save.disabled=true;
+  toast("Symptom record saved");
+});
+
+// assistant (pre-written examples)
+const A={
+ sleep:{q:"Why might my sleep change during menopause?",a:["Hormonal changes can contribute to sleep difficulties, including night sweats that wake you. Other health factors, stress and daily routines may also play a role.","A healthcare professional can help assess persistent or severe symptoms."]},
+ flash:{q:"Are hot flashes common?",a:["Hot flashes are one of the most commonly reported symptoms around menopause. How often they happen and how strong they feel varies from woman to woman.","If they are affecting your sleep, work or wellbeing, a clinician can talk through options with you."]},
+ when:{q:"When should I see a clinician?",a:["Consider speaking to a clinician if symptoms are severe, persistent, or affecting your daily life, or if something feels unusual for you.","For urgent concerns, contact a health facility straight away."]}
+};
+const chat=document.getElementById("chat");
+document.querySelectorAll("#ask button").forEach(b=>b.addEventListener("click",()=>{
+  const d=A[b.dataset.q]; b.remove();
+  const m=document.createElement("div");m.className="msg me";m.textContent=d.q;chat.append(m);
+  const t=document.createElement("div");t.className="msg bot";t.innerHTML='<span class="typing" aria-label="Writing"><i></i><i></i><i></i></span>';chat.append(t);
+  t.scrollIntoView({block:"end",behavior:"smooth"});
+  setTimeout(()=>{t.innerHTML=d.a.map(p=>`<p>${p}</p>`).join("")+'<span class="note">Educational support only. Not a diagnosis.</span>';t.scrollIntoView({block:"end",behavior:"smooth"});},1100);
+}));
+
+// care pathway
+document.getElementById("req").addEventListener("click",e=>{
+  const li=[...document.querySelectorAll("#steps li")];
+  li[1].className="done";li[1].querySelector(".st").textContent="Requested";
+  li[2].className="now";const s=document.createElement("span");s.className="st";s.textContent="Awaiting clinical review";li[2].lastElementChild.append(document.createElement("br"),s);
+  e.target.disabled=true;e.target.textContent="Clinical review requested";
+  toast("Clinical review requested");
+});
+</script>
+</body>
+</html>
